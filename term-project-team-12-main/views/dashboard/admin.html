@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>For User</title>
+    <!-- ! GOOGLE FONTS -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="../../assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../assets/css/test.css" />
+    <style>
+        .tablink {
+            width: 33.333%;
+        }
+    </style>
+</head>
+
+<body>
+
+    <%-include('../includes/header.html')%>
+
+        <div class="p-4rem">
+            <div class="main">
+                <%-include('../includes/flash.html')%>
+                <div class="p-5">
+                    <span class="d-block title">ADMİN</span>
+                    <div class="p-5">
+                        <div class="w-100">
+                            <a class="tablink nav-link" onClick="openPage('bookList', this)">Book List</a>
+                            <a class="tablink nav-link" onClick="openPage('addBook', this)">Add New Book</a>
+                            <a class="tablink nav-link" onClick="openPage('editAbout', this)">Edit About Us</a>
+                        </div>
+                        <div id="bookList" class="tabcontent">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">ID</th>
+                                        <th scope="col">Book Name</th>
+                                        <th scope="col">Author</th>
+                                        <th scope="col">Type</th>
+                                        <th scope="col">Price</th>
+                                        <th scope="col">Delete</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <%let i=0;books.forEach(book=> {;i++;%>
+                                        <tr class="<%-book._id%>">
+                                            <th scope="row"><%-i%></th>
+                                            <th scope="row"><%-book.title%></th>
+                                            <td><%-book.author%></td>
+                                            <td><%-book.type%></td>
+                                            <td>$<%-book.price%></td>
+                                            <td>
+                                                <a href="#" class="btn btn-danger delete-book"
+                                                    id="<%-book._id%>">Delete</a>
+                                            </td>
+                                        </tr>
+                                        <%})%>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div id="addBook" class="tabcontent">
+                            <form action="/admin/add-book" method="post">
+                                <div class="form-group">
+                                    <label for="bookName">Book Name</label>
+                                    <input type="text" class="form-control" name="bookName" placeholder="Book Name">
+                                </div>
+                                <div class="form-group mt-3">
+                                    <label for="author">Author</label>
+                                    <input type="text" class="form-control" name="author" placeholder="Author">
+                                </div>
+                                <div class="form-group mt-3">
+                                    <label for="type">Type</label>
+                                    <select class="form-control" name="type">
+                                        <option value="novel">Novel</option>
+                                        <option value="poem">Poem</option>
+                                        <option value="childrens">Children's</option>
+                                        <option value="self-help">Self-Help</option>
+                                    </select>
+                                </div>
+                                <div class="form-group mt-3">
+                                    <label for="price">Price</label>
+                                    <input type="text" class="form-control" name="price" placeholder="Price">
+                                </div>
+                                <div class="form-group mt-3">
+                                    <label for="image">Image</label>
+                                    <input type="file" class="form-control" name="imageFile" placeholder="Image">
+                                    <input type="hidden" name="image" value="">
+                                </div>
+                                <div class="form-group mt-3">
+                                    <label for="description">Description</label>
+                                    <textarea class="form-control" name="description" rows="3"></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </form>
+                        </div>
+                        <div id="editAbout" class="tabcontent">
+                            <form action="/admin/edit-about" method="post">
+                                <div class="form-group">
+                                    <label for="about">About Us</label>
+                                    <textarea class="form-control" name="about" rows="3"><%-site.about%></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="../../assets/js/jquery.min.js"></script>
+
+        <script>
+            let activeBg = 'white';
+
+            function openPage(pageName, elmnt) {
+                let i, tabcontent, tablinks;
+                tabcontent = document.getElementsByClassName("tabcontent");
+                for (i = 0; i < tabcontent.length; i++) {
+                    tabcontent[i].style.display = "none";
+                }
+                tablinks = document.getElementsByClassName("tablink");
+                for (i = 0; i < tablinks.length; i++) {
+                    tablinks[i].style.backgroundColor = "";
+                }
+                document.getElementById(pageName).style.display = "block";
+                elmnt.style.backgroundColor = activeBg;
+            }
+
+            openPage('bookList', document.getElementsByClassName("tablink")[0]);
+
+            ///////////////////////////////////////////////////////////////////////
+
+            //iamgeFile to base64 write value to image input
+            const imageFile = document.querySelector('input[name="imageFile"]');
+            const image = document.querySelector('input[name="image"]');
+            imageFile.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                const reader = new FileReader();
+                reader.onload = () => {
+                    image.value = reader.result;
+                };
+                reader.readAsDataURL(file);
+            });
+
+            ///////////////////////////////////////////////////////////////////////
+
+            $(window).on('load', function () {
+                $('.delete-book').on('click', function (e) {
+                    e.preventDefault();
+                    const id = $(this).attr('id');
+                    $.ajax({
+                        url: '/admin/delete-book',
+                        type: 'POST',
+                        data: {
+                            id: id
+                        },
+                        success: function (data) {
+                            if (data.code === 200) {
+                                $(`.${id}`).remove();
+                                alert(data.message)
+                            } else {
+                                alert(data.message)
+                            }
+                        }
+                    });
+                });
+            });
+        </script>
+
+        <div style="margin-bottom: 40px;"></div>
+        <%-include('../includes/footer.html')%>
+</body>
+
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../assets/css/register.css" />
+    <title>Register - &#223;ookStore</title>
+</head>
+
+<body>
+    <header class="header">
+        <nav class="navigation navigation--small">
+            <div class="navigation__logo">
+                <h2 class="navigation__logo-text">
+                    <a href="/">&#223;ook Store</a>
+                </h2>
+            </div>
+        </nav>
+    </header>
+    <main>
+        <div class="container">
+            <%-include('../includes/flash.html')%>
+            <div class="container container-inside" style="margin-top: 0px !important;">
+                <div class="box">
+                    <h1 class="signup_header">Sign up to buy books</h1>
+                    <div class="form-container">
+                        <form class="form" action="" method="post">
+                            <input type="text" placeholder="First Name" name="firstname"/>
+                            <input type="text" placeholder="Last Name" name="lastname" />
+                            <input type="text" placeholder="Username" name="username" />
+                            <input type="email" placeholder="Email address" name="email"/>
+                            <input type="password" placeholder="Password" name="password"/>
+                            <button type="sumbit" class="account_btn">
+                                <span>Create my account</span>
+                            </button>
+                        </form>
+                    </div>
+                    <p class="Already_account_and_login">
+                        <span>Already have an account?</span>
+                        <a href="/login"> Log in </a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+
+</html>

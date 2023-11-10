@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>For User</title>
+    <!-- ! GOOGLE FONTS -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="../../assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../assets/css/test.css" />
+</head>
+
+<body>
+    
+    <%-include('../includes/header.html')%>
+
+    <div class="p-4rem">
+        <div class="main">
+          <%-include('../includes/flash.html')%>
+            <div class="row p-5">
+                <div class="col-md-12">
+                        <div class="row no-gutters">
+                          <div class="col-md-5 mr--23">
+                            <img src="../../<%-book.image%>" class="card-img w-42" alt="Book">
+                          </div>
+                          <div class="col-md-7">
+                            <div class="card-body">
+                              <h4 class="card-title"><%-book.title%></h4>
+                              <p class="card-text card-text-deatils"><%-book.description%></p>
+                              <p class="card-text">Price: $<%-book.price%></p>
+                              <button class="btn btn-primary add-to-card" type="submit" id="<%-book._id%>" data-title="<%-book.title%>" data-price="<%-book.price%>">Add to Cart</button>
+                            </div>
+                          </div>
+                        </div>
+                </div>
+                  
+            </div>
+        </div>
+
+    </div>
+
+    <div style="margin-bottom: 195px;"></div>
+    <%-include('../includes/footer.html')%>
+    <script src="../../assets/js/jquery.min.js"></script>
+    <script>
+        // add-to-cart butonuna tıklandığında input value değerlerini alıp cart'a ekliyoruz. daha sonra cart localstorage'a kaydediliyor.
+        $('.add-to-card').click(function(){
+            var bookId = $(this).attr('id');
+            var bookTitle = $(this).data('title');
+            var bookPrice = $(this).data('price');
+            var book = {
+                id: bookId,
+                title: bookTitle,
+                price: bookPrice,
+                quantity: 1
+            };
+            var cart = JSON.parse(localStorage.getItem('cart'));
+            if(cart == null){
+                cart = [];
+            }
+            cart.push(book);
+            localStorage.setItem('cart', JSON.stringify(cart));
+            alert('Book added to cart');
+            basketAnimation();
+        });
+
+        function basketAnimation() {
+          let basketDiv = $('.basket-with-logo a');
+          let icon = basketDiv.find('i');
+          icon.animate({
+            fontSize: '2rem'
+          }, 200, function() {
+            icon.animate({
+              fontSize: '20px'
+            }, 200);
+          });
+        }
+    </script>
+</body>
+
+</html>

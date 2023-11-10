@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
+    <link rel="stylesheet" href="../../assets/css/login.css" />
+    <title>Login - &#223;ookStore</title>
+</head>
+
+<body>
+    <header class="header">
+        <nav class="navigation navigation--small">
+            <div class="navigation__logo">
+                <h2 class="navigation__logo-text">
+                    <a href="/">&#223;ook Store</a>
+                </h2>
+            </div>
+        </nav>
+    </header>
+    <main class="main">
+        <section class="section">
+            <div class="container">
+                <%-include('../includes/flash.html')%>
+                    <div class="container container-inside">
+                        <form class="form form--login" action="" method="post">
+                            <h1 class="form__title">
+                                Log in to <span>&#223;ook Store</span>
+                            </h1>
+                            <div class="form__group">
+                                <label for="form__username">
+                                    <i class="fa-solid fa-user"></i>
+                                </label>
+                                <input type="text" placeholder="Username or Email" name="username"
+                                    class="form__username" />
+                            </div>
+                            <div class="form__group">
+                                <label for="form__password">
+                                    <i class="fa-solid fa-key"></i>
+                                </label>
+                                <input type="password" placeholder="Password" name="password" class="form__username" />
+                            </div>
+                            <button class="button--email" type="sumbit">
+                                <i class="fa-solid fa-right-to-bracket"></i>
+                                Login
+                            </button>
+
+                            <p class="form__paragraph">
+                                Don't have an <span>&#223;ook Store</span> account?
+                            </p>
+
+                            <a href="/register" class="button--signup">
+                                <span class="SignUp">Sign Up</span>
+                            </a>
+                        </form>
+                    </div>
+            </div>
+        </section>
+    </main>
+
+</body>
+
+</html>

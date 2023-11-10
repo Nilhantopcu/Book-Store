@@ -1,0 +1,9 @@
+
+<%let hata = '';if(error_message.length) hata = error_message;if(error.length)
+hata = error%> <%if(hata.length || success_message.length) {%>
+<div class="alert-area">
+    <div class="alert alert-<%-(success_message.length) ? 'success' : 'danger'%> alert-dismissible fade show" role="alert">
+        <strong><%-(success_message.length) ? 'Başarılı!' : 'Hata!'%></strong> <%-(success_message.length) ? success_message : hata%>
+    </div>    
+</div>
+<%}%>

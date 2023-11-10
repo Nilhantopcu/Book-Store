@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>For User</title>
+    <!-- ! GOOGLE FONTS -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="../../assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../assets/css/test.css" />
+    <style>
+      .jp-card-container {
+        transform: scale(1.5) !important;
+      }
+    </style>
+</head>
+
+<body>
+    
+    <%-include('../includes/header.html')%>
+
+    <div class="p-4rem">
+        <div class="main">
+          <%-include('../includes/flash.html')%>
+            <div class="p-5">
+                    <span class="d-block title mb-5">PAY : <%-total%></span>
+                    <div class="row">
+                        <div class="col-md-7 mt-3">
+                        <form method="post" action="/pay">
+                      <div class="form-group">
+                        <label for="cardNumber">Card Number</label>
+                        <input type="text" class="form-control" id="cardNumber" placeholder="Enter card number">
+                      </div>
+                      <div class="form-group">
+                        <label for="cardHolder">Cardholder Name</label>
+                        <input type="text" class="form-control" id="cardHolder" placeholder="Enter cardholder name">
+                      </div>
+                      <div class="form-row">
+                        <div class="form-group col-md-6">
+                          <label for="expiryDate">Expiry Date</label>
+                          <input type="text" class="form-control" id="expiryDate" placeholder="MM/YYYY">
+                        </div>
+                        <div class="form-group col-md-6">
+                          <label for="cvv">CVV</label>
+                          <input type="text" class="form-control" id="cvv" placeholder="Enter CVV">
+                        </div>
+                        </div>
+                        <div class="form-group">
+                        <label for="amount">Amount</label>
+                        <input type="text" class="form-control" id="amount" value="<%-total%>" disabled readonly>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block btn-pay">Pay</button>
+                        
+                          </form>  
+                    </div>
+                    <div class="col-md-5 mt-5 pl-100 card-wrapper">
+                        
+                    </div> 
+                    </div>
+                           
+            </div>
+        </div>
+
+    </div>
+<div style="margin-bottom: 40px;"></div>
+    <%-include('../includes/footer.html')%>
+
+    <script src="../../assets/js/jquery.min.js"></script>
+    <script src="../../assets/js/jquery.card.js"></script>
+    <script>
+        $(function() {
+            $('form').card({
+                container: '.card-wrapper',
+                formSelectors: {
+                    numberInput: 'input#cardNumber',
+                    expiryInput: 'input#expiryDate',
+                    cvcInput: 'input#cvv',
+                    nameInput: 'input#cardHolder'
+                },
+                width: 200,
+                formatting: true,
+                messages: {
+                    validDate: 'valid\ndate',
+                    monthYear: 'mm/yyyy',
+                },
+                placeholders: {
+                    number: '•••• •••• •••• ••••',
+                    name: 'Full Name',
+                    expiry: '••/••••',
+                    cvc: '•••'
+                },
+            });
+            //pay-btn click validation form
+            $('.btn-pay').click(function(e) {
+                e.preventDefault();
+                var cardNumber = $('#cardNumber').val();
+                var cardHolder = $('#cardHolder').val();
+                var expiryDate = $('#expiryDate').val();
+                var cvv = $('#cvv').val();
+                if (cardNumber == '' || cardHolder == '' || expiryDate == '' || cvv == '') return alert('Please fill all fields');
+                if (cardNumber.length < 16) return alert('Card number must be 16 digits');
+                if (cardHolder.length < 3) return alert('Cardholder name must be 3 characters');
+                if (expiryDate.length < 5) return alert('Expiry date must be 5 characters');
+                if (cvv.length < 3) return alert('CVV must be 3 digits');
+                $('form').submit();
+            });
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>For User</title>
+    <!-- ! GOOGLE FONTS -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../assets/css/test.css" />
+</head>
+
+<body>
+    
+    <%-include('../includes/header.html')%>
+
+    <div class="p-4rem">
+        <div class="main">
+          <%-include('../includes/flash.html')%>
+            <div class="row p-5">
+                <span class="title">Basket</span>
+                <table class="mt-5 table">
+                    <thead>
+                      <tr class="basket-thead">
+                        <th>Product</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        <th>Total</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                  </table>
+                  <div class="w-100">
+                    <div class="float-right">
+                      <form action="/checkout" method="POST">
+                        <input type="hidden" name="total" value="">
+                        <button class="btn btn-primary checkout">Checkout</button>
+                      </form>
+                  </div>
+                  <div class="float-left">
+                    <a href="/" class="btn btn-primary">Continue Shopping</a>
+                    <button class="btn btn-primary clear-basket">Clear Basket</button>
+                  </div>
+                  </div>
+                  
+            </div>
+        </div>
+
+    </div>
+
+    <div style="margin-bottom: 195px;"></div>
+    <%-include('../includes/footer.html')%>
+
+    <script src="../../assets/js/jquery.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            let getBasket = localStorage.getItem('cart');
+            let basket = JSON.parse(getBasket);
+            let newBasket = [];
+            basket.forEach(function (item) {
+              let i = newBasket.findIndex(x => x.id == item.id);
+              if (i <= -1) {
+                newBasket.push(item);
+              } else {
+                newBasket[i].quantity = newBasket[i].quantity + item.quantity;
+              }
+            });
+
+            let total = 0;
+            for(var i = 0; i < newBasket.length; i++) {
+                let product = newBasket[i];
+                let productHtml = `
+                <tr>
+                    <td>${product.title}</td>
+                    <td>${product.quantity}</td>
+                    <td>$${product.price}</td>
+                    <td>$${product.price * product.quantity}</td>
+                </tr>
+                `;
+                total = total + (product.price * product.quantity);
+                $('.table tbody').append(productHtml);
+            }
+
+            let totalHtml = `
+            <tr>
+            <td colspan="3" class="text-right">Total:</td>
+            <td>$${total}</td>
+            </tr>
+            `;
+            $('.table tbody').append(totalHtml);
+            $('input[name="total"]').val(total);
+        });
+
+        $('.clear-basket').click(function () {
+            localStorage.removeItem('cart');
+            location.reload();
+        });
+    </script>
+</body>
+
+</html>
